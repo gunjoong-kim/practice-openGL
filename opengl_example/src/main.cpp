@@ -1,5 +1,7 @@
 #include "common.hpp"
 #include "shader.hpp"
+#include "program.hpp"
+#include "context.hpp"
 
 void OnFramebufferSizeChange(GLFWwindow* window, int width, int height) {
     SPDLOG_INFO("framebuffer size changed: ({} x {})", width, height);
@@ -19,11 +21,6 @@ void OnKeyEvent(GLFWwindow* window,
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
-}
-
-void Render() {
-    glClearColor(0.1f, 0.2f, 0.3f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 int main() {
@@ -66,10 +63,12 @@ int main() {
 
 	// 이 밑부터 openGL function 사용가능
 
-	auto vertexShader = Shader::CreateFromFile("./shader/simple.vs", GL_VERTEX_SHADER);
-	auto fragmentShader = Shader::CreateFromFile("./shader/simple.fs", GL_FRAGMENT_SHADER);
-	SPDLOG_INFO("vertex shader id: {}", vertexShader->Get());
-	SPDLOG_INFO("fragment shader id: {}", fragmentShader->Get());
+	auto context = Context::Create();
+	if (!context) {
+		SPDLOG_ERROR("failed to create context");
+		glfwTerminate();
+		return -1;
+	}
 
 	OnFramebufferSizeChange(window, WINDOW_WIDTH, WINDOW_HEIGHT);
 	glfwSetFramebufferSizeCallback(window, OnFramebufferSizeChange);
@@ -79,12 +78,10 @@ int main() {
     SPDLOG_INFO("Start main loop");
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
-		glClearColor(0.0f, 0.1f, 0.2f, 0.2f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		context->Render();
 		glfwSwapBuffers(window);
-
     }
-
+	context.reset(); // unique pointer의 멤버
     glfwTerminate();
     return 0;
 }
