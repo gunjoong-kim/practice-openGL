@@ -8,6 +8,31 @@ ContextUPtr Context::Create() {
 }
 
 bool Context::Init() {
+	float vertices[] = {
+		0.5f, 0.5f, 0.0f, // top right
+		0.5f, -0.5f, 0.0f, // bottom right
+		-0.5f, -0.5f, 0.0f, // bottom left
+		-0.5f, 0.5f, 0.0f, // top left
+	};
+	uint32_t indices[] = { // note that we start from 0!
+		0, 1, 3, // first triangle
+		1, 2, 3, // second triangle
+	};
+
+	// VBO 만들 기 전에 VAO 만들기, VAO binding 먼저
+	m_vertexLayout = VertexLayout::Create();
+
+	m_vertexBuffer = Buffer::CreateWithData(GL_ARRAY_BUFFER, GL_STATIC_DRAW, vertices, sizeof(float) * 12);
+	// vertex buffer 생성함수
+	// gl array buffer -> 위치값과 여러 정보들이 들어 있는 버퍼에 binding
+	// 실제로 데이터를 복사하는 과정
+
+	m_vertexLayout->SetAttrib(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
+	// 0번 사용하기 -> vao attribute 0 -> location 0 in v shader
+	// 각각 data float 3개 다음 데이터 float 3개 뒤 normalize 하지 말라 offset 0
+
+	m_indexBuffer = Buffer::CreateWithData(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, indices, sizeof(uint32_t) * 6);
+
 	// shared pointer로 인자 받기
 	ShaderPtr vertShader = Shader::CreateFromFile("./shader/simple.vs", GL_VERTEX_SHADER);
 	ShaderPtr fragShader = Shader::CreateFromFile("./shader/simple.fs", GL_FRAGMENT_SHADER);
@@ -23,15 +48,16 @@ bool Context::Init() {
 	SPDLOG_INFO("program id: {}", m_program->Get());
 
 	glClearColor(0.1f, 0.2f, 0.3f, 0.0f);
-
-	uint32_t vao = 0;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
 	return true;
 }
 
 void Context::Render() {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glUseProgram(m_program->Get());
-	glDrawArrays(GL_POINTS, 0, 1);
+	m_program->Use();
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	// 지금 VBO, VAO, EBO에 binding 되어 있는 것들로 그림 그리기
+	// offset 첫 정점 index
+	// count 몇개 점을 그릴거냐
+	// type index의 자료형
+	// primitives -> 굉장히 다양한 타입의 그림그리는 형식이 존재함.
 }

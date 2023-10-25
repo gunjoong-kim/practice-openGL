@@ -4,6 +4,8 @@
 #include "common.hpp"
 #include "shader.hpp"
 #include "program.hpp"
+#include "buffer.hpp"
+#include "vertex_layout.hpp"
 
 CLASS_PTR(Context)
 class Context {
@@ -14,6 +16,9 @@ private:
 	Context() {}
 	bool Init();
 	ProgramUPtr m_program;
+	VertexLayoutUPtr m_vertexLayout;
+	BufferUPtr m_vertexBuffer;
+	BufferUPtr m_indexBuffer;
 };
 
 #endif // __CONTEXT_HPP__
