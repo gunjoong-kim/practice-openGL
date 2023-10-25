@@ -1,17 +1,20 @@
 #ifndef __CONTEXT_HPP__
 #define __CONTEXT_HPP__
 
-#include "common.hpp"
-#include "shader.hpp"
-#include "program.hpp"
-#include "buffer.hpp"
-#include "vertex_layout.hpp"
+#include "Common.hpp"
+#include "Shader.hpp"
+#include "Program.hpp"
+#include "Buffer.hpp"
+#include "VertexLayout.hpp"
 
 CLASS_PTR(Context)
-class Context {
+
+class Context
+{
 public:
 	static ContextUPtr Create();
 	void Render();
+
 private:
 	Context() {}
 	bool Init();

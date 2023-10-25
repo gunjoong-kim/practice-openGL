@@ -1,10 +1,12 @@
-#ifndef __VERTEX_LAYOUT_HPP__
-#define __VERTEX_LAYOUT_HPP__
+#ifndef __VERTEXLAYOUT_HPP__
+#define __VERTEXLAYOUT_HPP__
 
-#include "common.hpp"
+#include "Common.hpp"
 
 CLASS_PTR(VertexLayout)
-class VertexLayout {
+
+class VertexLayout
+{
 public:
     static VertexLayoutUPtr Create();
     ~VertexLayout();
@@ -23,4 +25,4 @@ private:
     uint32_t m_vertexArrayObject { 0 };
 };
 
-#endif // __VERTEX_LAYOUT_HPP__
+#endif // __VERTEXLAYOUT_HPP__

@@ -1,15 +1,22 @@
-#include "common.hpp"
-#include "shader.hpp"
-#include "program.hpp"
-#include "context.hpp"
+#include "Common.hpp"
+#include "Shader.hpp"
+#include "Program.hpp"
+#include "Context.hpp"
 
-void OnFramebufferSizeChange(GLFWwindow* window, int width, int height) {
+void OnFramebufferSizeChange(GLFWwindow* window, int width, int height)
+{
     SPDLOG_INFO("framebuffer size changed: ({} x {})", width, height);
     glViewport(0, 0, width, height);
 }
 
-void OnKeyEvent(GLFWwindow* window,
-    int key, int scancode, int action, int mods) {
+void OnKeyEvent
+(
+    GLFWwindow* window,
+    int key,
+    int scancode,
+    int action,
+    int mods
+) {
     SPDLOG_INFO("key: {}, scancode: {}, action: {}, mods: {}{}{}",
         key, scancode,
         action == GLFW_PRESS ? "Pressed" :
@@ -23,7 +30,8 @@ void OnKeyEvent(GLFWwindow* window,
     }
 }
 
-int main() {
+int main()
+{
 	SPDLOG_INFO("Start program");
 	
 	// glfw 라이브러리 초기화, 실패하면 에러 출력후 종료

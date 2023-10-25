@@ -10,12 +10,12 @@ set(WINDOW_HEIGHT 540)
 project(${PROJECT_NAME})
 add_executable(${PROJECT_NAME}
 	src/main.cpp
-	src/common.cpp src/common.hpp
-	src/shader.cpp src/shader.hpp
-	src/program.cpp src/program.hpp
-	src/context.cpp src/context.hpp
-	src/buffer.cpp src/buffer.hpp
-	src/vertex_layout.cpp src/vertex_layout.hpp
+	src/Common.cpp inc/Common.hpp
+	src/Shader.cpp inc/Shader.hpp
+	src/Program.cpp inc/Program.hpp
+	src/Context.cpp inc/Context.hpp
+	src/Buffer.cpp inc/Buffer.hpp
+	src/VertexLayout.cpp inc/VertexLayout.hpp
 	)
 
 include(Dependency.cmake)
@@ -24,6 +24,7 @@ include(Dependency.cmake)
 target_include_directories(${PROJECT_NAME} PUBLIC ${DEP_INCLUDE_DIR})
 target_link_directories(${PROJECT_NAME} PUBLIC ${DEP_LIB_DIR})
 target_link_libraries(${PROJECT_NAME} PUBLIC ${DEP_LIBS})
+target_include_directories(${PROJECT_NAME} PUBLIC inc)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC
     WINDOW_NAME="${WINDOW_NAME}"

@@ -1,19 +1,20 @@
 #ifndef __PROGRAM_HPP__
 #define __PROGRAM_HPP__
 
-#include "common.hpp"
-#include "shader.hpp"
+#include "Common.hpp"
+#include "Shader.hpp"
 
 CLASS_PTR(Program)
 
-class Program {
+class Program
+{
 public:
-	static ProgramUPtr Create(
-		const std::vector<ShaderPtr>& shaders);
+	static ProgramUPtr Create(const std::vector<ShaderPtr>& shaders);
 
 	~Program();
 	uint32_t Get() const { return m_program; }
 	void Use() const;
+
 private:
 	Program() {}
 	bool Link(const std::vector<ShaderPtr>& shaders);

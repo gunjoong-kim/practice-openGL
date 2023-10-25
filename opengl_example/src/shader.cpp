@@ -1,14 +1,19 @@
-#include "shader.hpp"
+#include "Shader.hpp"
 
-ShaderUPtr Shader::CreateFromFile(const std::string& filename,
-	GLenum shaderType) {
+ShaderUPtr Shader::CreateFromFile(
+	const std::string& filename,
+	GLenum shaderType
+) {
 	auto shader = ShaderUPtr(new Shader());
 	if (!shader->LoadFile(filename, shaderType))
 		return nullptr; // shader instance 자동해제
 	return std::move(shader); // 성공했으면 move로 소유권 이전
 }
 
-bool Shader::LoadFile(const std::string& filename, GLenum shaderType) {
+bool Shader::LoadFile(
+	const std::string& filename,
+	GLenum shaderType
+) {
 	auto result = LoadTextFile(filename);
 	if (!result.has_value())
 		return false;
@@ -35,7 +40,8 @@ bool Shader::LoadFile(const std::string& filename, GLenum shaderType) {
 	return true;
 }
 
-Shader::~Shader() {
+Shader::~Shader()
+{
 	if (m_shader) {
 		glDeleteShader(m_shader);
 	}

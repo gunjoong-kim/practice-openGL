@@ -1,13 +1,15 @@
-#include "context.hpp"
+#include "Context.hpp"
 
-ContextUPtr Context::Create() {
+ContextUPtr Context::Create()
+{
   auto context = ContextUPtr(new Context());
   if (!context->Init())
     return nullptr;
   return std::move(context);
 }
 
-bool Context::Init() {
+bool Context::Init()
+{
 	float vertices[] = {
 		0.5f, 0.5f, 0.0f, // top right
 		0.5f, -0.5f, 0.0f, // bottom right
@@ -51,7 +53,8 @@ bool Context::Init() {
 	return true;
 }
 
-void Context::Render() {
+void Context::Render()
+{
 	glClear(GL_COLOR_BUFFER_BIT);
 	m_program->Use();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
