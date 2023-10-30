@@ -23,16 +23,16 @@ bool Shader::LoadFile(
 	int32_t codeLength = (int32_t)code.length();
 
 	// create and compile shader
-	m_shader = glCreateShader(shaderType);
-	glShaderSource(m_shader, 1, (const GLchar* const*)&codePtr, &codeLength);
-	glCompileShader(m_shader);
+	this->m_shader = glCreateShader(shaderType);
+	glShaderSource(this->m_shader, 1, (const GLchar* const*)&codePtr, &codeLength);
+	glCompileShader(this->m_shader);
 
 	// check compile error
 	int success = 0;
-	glGetShaderiv(m_shader, GL_COMPILE_STATUS, &success); // shader GL_COMPILE_STATUS 정보 얻어오기
+	glGetShaderiv(this->m_shader, GL_COMPILE_STATUS, &success); // shader GL_COMPILE_STATUS 정보 얻어오기
 	if (!success) {
 		char infoLog[1024];
-		glGetShaderInfoLog(m_shader, 1024, nullptr, infoLog); // error 정보 얻어오기
+		glGetShaderInfoLog(this->m_shader, 1024, nullptr, infoLog); // error 정보 얻어오기
 		SPDLOG_ERROR("failed to compile shader: \"{}\"", filename);
 		SPDLOG_ERROR("reason: {}", infoLog);
 		return false;
@@ -42,7 +42,7 @@ bool Shader::LoadFile(
 
 Shader::~Shader()
 {
-	if (m_shader) {
-		glDeleteShader(m_shader);
+	if (this->m_shader) {
+		glDeleteShader(this->m_shader);
 	}
 }

@@ -9,8 +9,8 @@ VertexLayoutUPtr VertexLayout::Create()
 
 VertexLayout::~VertexLayout()
 {
-    if (m_vertexArrayObject) {
-        glDeleteVertexArrays(1, &m_vertexArrayObject);
+    if (this->m_vertexArrayObject) {
+        glDeleteVertexArrays(1, &(this->m_vertexArrayObject));
     }
 }
 
@@ -33,6 +33,6 @@ void VertexLayout::SetAttrib(
 
 void VertexLayout::Init()
 {
-    glGenVertexArrays(1, &m_vertexArrayObject);
+    glGenVertexArrays(1, &(this->m_vertexArrayObject));
     Bind();
 }

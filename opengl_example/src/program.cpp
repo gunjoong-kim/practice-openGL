@@ -10,17 +10,17 @@ ProgramUPtr Program::Create(const std::vector<ShaderPtr>& shaders)
 
 bool Program::Link(const std::vector<ShaderPtr>& shaders)
 {
-	m_program = glCreateProgram();
+	this->m_program = glCreateProgram();
 
 	for (auto& shader : shaders)
-		glAttachShader(m_program, shader->Get());
-	glLinkProgram(m_program);
+		glAttachShader(this->m_program, shader->Get());
+	glLinkProgram(this->m_program);
 
 	int success = 0;
-	glGetProgramiv(m_program, GL_LINK_STATUS, &success);
+	glGetProgramiv(this->m_program, GL_LINK_STATUS, &success);
 	if (!success) {
 		char infoLog[1024];
-		glGetProgramInfoLog(m_program, 1024, nullptr, infoLog);
+		glGetProgramInfoLog(this->m_program, 1024, nullptr, infoLog);
 		SPDLOG_ERROR("failed to link program: {}", infoLog);
 		return false;
 	}
@@ -29,12 +29,12 @@ bool Program::Link(const std::vector<ShaderPtr>& shaders)
 
 Program::~Program()
 {
-	if (m_program) {
-		glDeleteProgram(m_program);
+	if (this->m_program) {
+		glDeleteProgram(this->m_program);
 	}
 }
 
 void Program::Use() const
 {
-	glUseProgram(m_program);
+	glUseProgram(this->m_program);
 }

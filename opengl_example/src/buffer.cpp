@@ -15,14 +15,14 @@ BufferUPtr Buffer::CreateWithData(
 
 Buffer::~Buffer()
 {
-    if (m_buffer) {
-        glDeleteBuffers(1, &m_buffer);
+    if (this->m_buffer) {
+        glDeleteBuffers(1, &(this->m_buffer));
     }
 }
 
 void Buffer::Bind() const
 {
-    glBindBuffer(m_bufferType, m_buffer);
+    glBindBuffer(this->m_bufferType, this->m_buffer);
 }
 
 bool Buffer::Init(
@@ -31,10 +31,10 @@ bool Buffer::Init(
     const void* data,
     size_t dataSize
 ) {
-    m_bufferType = bufferType;
-    m_usage = usage;
-    glGenBuffers(1, &m_buffer);
+    this->m_bufferType = bufferType;
+    this->m_usage = usage;
+    glGenBuffers(1, &(this->m_buffer));
     Bind();
-    glBufferData(m_bufferType, dataSize, data, usage);
+    glBufferData(this->m_bufferType, dataSize, data, usage);
     return true;
 }

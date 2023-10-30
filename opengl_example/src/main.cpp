@@ -34,7 +34,7 @@ int main()
 {
 	SPDLOG_INFO("Start program");
 	
-	// glfw 라이브러리 초기화, 실패하면 에러 출력후 종료
+	// glfw library init
     SPDLOG_INFO("Initialize glfw");
     if (!glfwInit()) {
         const char* description = nullptr;
@@ -43,12 +43,13 @@ int main()
         return -1;
     }
 
+    // hit about opengl context
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// glfw 윈도우 생성, 실패하면 에러 출력후 종료
+	// create glfw window
     SPDLOG_INFO("Create glfw window");
     auto window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_NAME,
       nullptr, nullptr);
@@ -60,16 +61,16 @@ int main()
 
 	glfwMakeContextCurrent(window);
 
-	// glad를 활용한 OpenGL 함수 로딩
+	// load openGL functions by glad
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 	    SPDLOG_ERROR("failed to initialize glad");
 	    glfwTerminate();
 	    return -1;
 	}
+
+    // Now we can use openGL functions
 	auto glVersion = glGetString(GL_VERSION);
 	SPDLOG_INFO("OpenGL context version: {}", (const char*)glVersion);
-
-	// 이 밑부터 openGL function 사용가능
 
 	auto context = Context::Create();
 	if (!context) {
