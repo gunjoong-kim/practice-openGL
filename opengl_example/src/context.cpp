@@ -55,32 +55,28 @@ bool Context::Init()
 		return false;
 	SPDLOG_INFO("program id: {}", this->m_program->Get());
 	glClearColor(0.1f, 0.2f, 0.3f, 0.0f);
-	auto image = Image::Load("./image/wall.jpeg");
-	if (!image) 
+
+	auto image = Image::Load("./image/container.jpg");
+	if (image == nullptr)
 		return false;
 	SPDLOG_INFO("image: {}x{}, {} channels",
-	image->GetWidth(), image->GetHeight(), image->GetChannelCount());
+		image->GetWidth(), image->GetHeight(), image->GetChannelCount());
+	auto image2 = Image::Load("./image/awesomeface.png");
+	if (image2 == nullptr)
+		return false;
+	SPDLOG_INFO("image2: {}x{}, {} channels",
+		image2->GetWidth(), image2->GetHeight(), image2->GetChannelCount());
 
-	glGenTextures(1, &(this->m_texture));
-	glBindTexture(GL_TEXTURE_2D, this->m_texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // texture 너무 크면 어떻게 할까
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // 반대
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // 가로 0 보다 작거나 1보다 클때
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // 세로 0 보다 작거나 1보다 클때
+	this->m_texture = Texture::CreateFromImage(image.get());
+	this->m_texture2 = Texture::CreateFromImage(image2.get());
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_texture->Get());
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_texture2->Get());
 
-	// target : 2D texture <- m_texture에 binding 되어 있음
-	// 앞 : GPU texture data
-	// 뒤 : CPU texture data
-	// CPU -> GPU 복사 해야 하므로 여러 description 명세
-	// 0 <- level 값 <- min map
-	// GL_RGB -> channel
-	// 0 <- boarder size
-	// image에서의 format
-	// 하나의 채널을 표현하는 데이터 타입
-	// 실제 데이터 넘겨주기
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
-		image->GetWidth(), image->GetHeight(), 0,
-		GL_RGB, GL_UNSIGNED_BYTE, image->GetData());
+	m_program->Use();
+	glUniform1i(glGetUniformLocation(m_program->Get(), "tex"), 0);
+	glUniform1i(glGetUniformLocation(m_program->Get(), "tex2"), 1);
 	return true;
 }
 
