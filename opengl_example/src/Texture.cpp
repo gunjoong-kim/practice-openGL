@@ -1,33 +1,39 @@
 #include "Texture.hpp"
 
-TextureUPtr Texture::CreateFromImage(const Image* image) {
+TextureUPtr Texture::CreateFromImage(const Image* image)
+{
     auto texture = TextureUPtr(new Texture());
     texture->CreateTexture();
     texture->SetTextureFromImage(image);
     return std::move(texture);
 }
 
-Texture::~Texture() {
+Texture::~Texture()
+{
     if (m_texture) {
         glDeleteTextures(1, &m_texture);
     }
 }
 
-void Texture::Bind() const {
+void Texture::Bind() const
+{
     glBindTexture(GL_TEXTURE_2D, m_texture);
 }
 
-void Texture::SetFilter(uint32_t minFilter, uint32_t magFilter) const {
+void Texture::SetFilter(uint32_t minFilter, uint32_t magFilter) const
+{
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
 }
 
-void Texture::SetWrap(uint32_t sWrap, uint32_t tWrap) const {
+void Texture::SetWrap(uint32_t sWrap, uint32_t tWrap) const
+{
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, sWrap);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, tWrap);
 }
-    
-void Texture::CreateTexture() {
+
+void Texture::CreateTexture()
+{
     glGenTextures(1, &m_texture);
     // bind and set default filter and wrap option
     Bind();
@@ -35,7 +41,8 @@ void Texture::CreateTexture() {
     SetWrap(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 }
 
-void Texture::SetTextureFromImage(const Image* image) {
+void Texture::SetTextureFromImage(const Image* image)
+{
     GLenum format = GL_RGBA;
     switch (image->GetChannelCount()) {
         default: break;
